@@ -37,7 +37,7 @@
 # Disposição com relação ao dígito menos significativo: 
 
 
-# 60, 01, 31, 11, 21, 02, 13, 05, 26, 16, 07, 27, 19, 09
+# 60, 01, 31, 11, 21, 02, 13, 05, 26, 16, 07, 27, 19, 09  ## ERRADO ANIMAL
 
 
 # Considerando d como o próximo dígito:
@@ -61,28 +61,9 @@
 # 01, 02, 05, 07, 09, 11, 13, 16, 19, 21, 26, 27, 31, 60
 
 
-vetorOriginal = [ 19, 13, 5, 27, 1, 26, 31, 16, 2, 9, 11, 21, 60, 7]
+vetorOriginal = [ 19, 13, 115, 27, 1, 26, 123,  53325, 31, 16, 2, 9, 11, 21, 60, 7]
 
 vetorNovo = []
-
-
-
-tamVetorOriginal =  len(vetorOriginal)
-
-for pos in range(tamVetorOriginal):
-    if vetorOriginal[pos] < 10:
-        vetorNovo.append('0' + str(vetorOriginal[pos]))
-    else:
-        vetorNovo.append(str(vetorOriginal[pos]))
-
-
-# print(vetorNovo)
-
-
-
-
-numAlgarismos = 2
-
 
 caixas = [
     [], #0
@@ -100,20 +81,72 @@ caixas = [
 
 
 
-tamVetorNovo = len(vetorNovo)
+# calcular maior numero de algarismos e transformar tudo para string
 
-for pos in range(tamVetorNovo):
-    numCaixa = int(vetorNovo[pos][1])
-    valor = vetorNovo[pos]
+maiorNumAlgarismos = 0
+tamVetorOriginal =  len(vetorOriginal)
 
-    caixas[numCaixa].append(valor)
+for pos in range(tamVetorOriginal):
+
+    numString = str(vetorOriginal[pos])
+
+    tamString = len(numString)
+
+    if tamString > maiorNumAlgarismos :
+        maiorNumAlgarismos = tamString
+        
+    vetorNovo.append(numString)
+
+
+numBaseParaAcrescimoZero = 10 ** (maiorNumAlgarismos - 1)
+
+
+for pos in range(tamVetorOriginal):
     
+    numString  = vetorNovo[pos]
 
 
-print(caixas)
+    if int(numString) < numBaseParaAcrescimoZero:
+
+        while len(numString) < maiorNumAlgarismos:
+            numString = '0' + numString 
+    
+    vetorNovo[pos] = numString
 
 
+for posAlgarismo in range(maiorNumAlgarismos-1,-1,-1):
+    
+   #ordenar nas caixas
+
+    tamVetorNovo = len(vetorNovo)
+
+    for pos in range(tamVetorNovo):
+        numCaixa = int(vetorNovo[pos][posAlgarismo])
+        valor = vetorNovo[pos]
+
+        caixas[numCaixa].append(valor)
+        
+    # print(vetorNovo)
+
+    vetorNovo = []
 
 
+    # inserir no vetor e remover do vetor c/ o pop
+
+    tamCaixas =  len(caixas)
+
+    for numCaixa in range(tamCaixas):
+        caixaValor =  caixas[numCaixa]
+        tamCaixaValor = len(caixaValor)
+
+        while len(caixaValor) > 0:
+
+            # if posAlgarismo == 0:
+            #     vetorNovo.append(int(caixaValor.pop(0)))
+            # else:    
+            #     vetorNovo.append(caixaValor.pop(0))
+        
+            vetorNovo.append( int(caixaValor.pop(0)) if posAlgarismo == 0 else caixaValor.pop(0) )
 
 
+print(vetorNovo)
